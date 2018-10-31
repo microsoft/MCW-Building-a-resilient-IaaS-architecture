@@ -54,7 +54,7 @@ At the end of the workshop, you will be better able to design and use availabili
 
 Analyze your customer’s needs.
 
-Timeframe: 15 minutes
+Time frame: 15 minutes
 
 Directions: With all participants in the session, the facilitator/SME presents an overview of the customer case study along with technical tips. 
 1.  Meet your table participants and trainer .
@@ -114,15 +114,10 @@ Contoso has received multiple complaints from customers at times when they have 
 
 
 Contoso's business critical applications include:
-
 -   The authentication and authorization infrastructure.
-
 -   The website with its SQL data tier, supporting both employees, customers and third-party manufacturing plants and factories. Use cases include:
-
     -   Employees: Sales lead tracking
-
     -   Customers: Search the catalog of inventory, order parts, schedule repairs and provide support
-
     -   Third-party manufacturing plants and factories: Supply manufacturing schedules to Contoso
 
 ### Customer needs 
@@ -160,7 +155,7 @@ Contoso's business critical applications include:
 **Outcome** 
 Design a solution and prepare to present the solution to the target customer audience in a 15-minute chalk-talk format. 
 
-Timeframe: 60 minutes
+Time frame: 60 minutes
 
 **Business needs**
 
