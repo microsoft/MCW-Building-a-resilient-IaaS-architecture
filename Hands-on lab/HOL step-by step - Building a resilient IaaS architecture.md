@@ -9,7 +9,7 @@ Hands-on lab step-by-step
 </div>
 
 <div class="MCWHeader3">
-August 2018
+November 2018
 </div>
 
 
@@ -47,7 +47,7 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
         - [Task 1: Deploy SQL Always-On Cluster](#task-1-deploy-sql-always-on-cluster)
         - [Task 2: Convert the SQL deployment to Managed Disks](#task-2-convert-the-sql-deployment-to-managed-disks)
         - [Task 3: Build a scalable and resilient web tier](#task-3-build-a-scalable-and-resilient-web-tier)
-        - [Summary](#summary)
+        - [Summary](#summary-1)
     - [Exercise 4: Configure SQL Server Managed Backup](#exercise-4-configure-sql-server-managed-backup)
         - [Task 1: Create an Azure Storage Account](#task-1-create-an-azure-storage-account)
         - [Task 2: Configure managed backup in SQL Server](#task-2-configure-managed-backup-in-sql-server)
@@ -75,7 +75,7 @@ Contoso has asked you to deploy their infrastructure in a resilient manner to in
 ## Solution architecture
 
 Highly resilient deployment of Active Directory Domain Controllers in Azure.
-    ![Highly resilient deployment of Active Directory Domain Controllers in Azure.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image2.png "Solution architecture")
+    ![Highly resilient deployment of Active Directory Domain Controllers in Azure.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image11.png "Solution architecture")
 
 Deployment of a web app using scale sets, and a highly available SQL Always On deployment.
     ![Deployment of a web app using scale sets, and a highly available SQL Always On deployment.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image3.png "Solution architecture")
@@ -86,13 +86,11 @@ Deployment of a web app using scale sets, and a highly available SQL Always On d
 
 2.  Virtual Machine Built during this hands-on lab or local machine with the following:
 
-    a.  Visual Studio 2017 Community or Enterprise Edition
-
-    b.  Latest Azure PowerShell Cmdlets
-
-    c.  <https://azure.microsoft.com/en-us/downloads/>
-
-    d.  Ensure you reboot after installing the SDK or Azure PowerShell will not work correctly.
+    - Visual Studio 2017 Community or Enterprise Edition
+    - Latest Azure PowerShell cmdlets
+        - <https://azure.microsoft.com/en-us/downloads/>
+        - <https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps>
+        - Ensure you reboot after installing the SDK or Azure PowerShell may not work correctly.
 
 ### Help references
 |    |            |
@@ -125,9 +123,9 @@ Contoso is planning to deploy infrastructure in multiple regions in Azure to pro
 
     ![A screen with the Deploy to Azure button visible.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image24.png "Sample Application in GitHub")
 
-4.  Specify the Resource group name as **ContosoRG** and the region as **West Central US**, **check the two check boxes** on the page and click **Purchase**.
+4.  Specify the Resource group name as **ContosoRG** and the region as **West Central US**, check the **I agree to the terms and conditions state above** checkbox on the page and click **Purchase**.
 
-    ![The custom deployment screen with ContosoRG as the resource group and West Central US as the region.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image25.png "Custom deployment")
+    ![The custom deployment screen with ContosoRG as the resource group and West Central US as the region.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image111.png "Custom deployment")
 
 5.  Once the deployment is successful, validate the deployment by opening the **CloudShopWeb** virtual machine and navigating your browser to its public IP address.
 
