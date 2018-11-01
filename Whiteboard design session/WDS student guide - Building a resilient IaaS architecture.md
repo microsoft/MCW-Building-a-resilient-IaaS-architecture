@@ -176,11 +176,8 @@ Directions: Design the solution architecture by drawing it on the board, and sep
 *Virtual Network design in Azure*
 
 1.  Document and diagram how you will build redundant Virtual Networks for Contoso. Address the following design points:
-
     -   Must allow for connectivity between two regions close to the Cheyenne and Seattle data centers
-
     -   Address the need for redundancy and resiliency in the site-to-site VPN connectivity from Contoso's offices to Azure
-
     -   How will you design the address space and subnets to support Contoso's requirements?
 
 2.  Document what network security groups and rules should be put in place for protection. What ports would you open and why?
@@ -215,7 +212,7 @@ Prepare a 15-minute chalk-talk style presentation to the customer.
  
 Present a solution to the target customer audience in a 15-minute chalk-talk format.
 
-Timeframe: 30 minutes
+Time frame: 30 minutes
 
 **Presentation** 
 
@@ -231,7 +228,7 @@ Directions:
 
 ##  Wrap-up 
 
-Timeframe: 15 minutes
+Time frame: 15 minutes
 
 Directions: Tables reconvene with the larger group to hear the facilitator/SME share the preferred solution for the case study.
 
@@ -243,7 +240,7 @@ Directions: Tables reconvene with the larger group to hear the facilitator/SME s
 | Microsoft Azure Reference Architectures| <https://docs.microsoft.com/en-us/azure/guidance/guidance-architecture> |
 | High availability checklist | <https://docs.microsoft.com/en-us/azure/resiliency/resiliency-high-availability-checklist> |
 | Azure resiliency technical guidance | <https://azure.microsoft.com/en-us/documentation/articles/resiliency-technical-guidance/> |
-| Guidelines for Deploying Windows Server AD on Azure VMs | <https://msdn.microsoft.com/en-us/library/azure/jj156090.aspx> |
+| Introduction to Active Directory Domain Services (AD DS) Virtualization (Level 100) | <https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/introduction-to-active-directory-domain-services-ad-ds-virtualization-level-100> |
 | Running your AD in Windows Azure | <https://channel9.msdn.com/Events/TechDays/Techdays-2014-the-Netherlands/Running-your-Active-Directory-in-Windows-Azure> |
 | Running VMs for an N-tier architecture on Azure | <https://docs.microsoft.com/en-us/azure/guidance/guidance-architecture> |
 | Azure Managed Disks | <https://azure.microsoft.com/en-us/services/managed-disks/> <https://docs.microsoft.com/en-us/azure/storage/storage-managed-disks-overview> |
