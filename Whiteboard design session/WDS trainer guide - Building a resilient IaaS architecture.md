@@ -167,7 +167,7 @@ Directions: With all participants in the session, the facilitator/SME presents a
  
 ### Customer situation
 
-Contoso, is a leading manufacturer, seller, distributor and servicer of parts for heating, venting and air-conditioning (HVAC) systems. Their customer base includes some of the largest corporations and independent firms in the US. Contoso specializes in the datacenter space, designing computer room air conditioning (CRAC) units and contracting in the planning of hyper-scale cloud provider datacenter cooling strategies. As such, the research and development group are one of the largest business units in the company. The company's headquarters in in Cheyenne, Wyoming with a second large location in Seattle, Washington along with three smaller branch offices scatted around the United States.
+Contoso, is a leading manufacturer, seller, distributor and servicer of parts for heating, venting and air-conditioning (HVAC) systems. Their customer base includes some of the largest corporations and independent firms in the US. Contoso specializes in the datacenter space, designing computer room air conditioning (CRAC) units and contracting in the planning of hyper-scale cloud provider datacenter cooling strategies. As such, the research and development group are one of the largest business units in the company. The company's headquarters in in Reston, Virginia with a second large location in Des Moines, Iowa along with three smaller branch offices scatted around the United States.
 
 Contoso would be considered by most as a classic IT shop, mainly focused on their infrastructure. Their application development department's skill set is dated, predominantly focused on client/server development. Two years ago, the company began a project to move portions of their infrastructure to Azure to gain efficiencies and eventually exit the hardware obsolescence cycle. In the process Contoso developed a standard deployment policy for new infrastructure that has been followed ever since.
 
@@ -177,13 +177,13 @@ There have been ongoing stability issues including a critical server running out
 
 In addition to the ordering system, they have a legacy software program where the data is tightly coupled with the application. Because of the time and effort required, a re-write of this application is not planned. The application is being backed up using a disk-to-disk-to-tape approach. The legacy application is running on aging hardware and a decision must be made as to whether to purchase new hardware, re-write the application, or move it as-is to Azure.
 
-Each of the branch offices are small enough to not require an on-site server infrastructure. These locations have connectivity to the Cheyenne headquarters through a Virtual Private Network (VPN). At times, various branch offices have experienced connectivity issues over the VPN to Cheyenne. While there is some understanding of these occurrences, there is a desire to increase the stability of the connection as growth continues.
+Each of the branch offices are small enough to not require an on-site server infrastructure. These locations have connectivity to the Reston headquarters through a Virtual Private Network (VPN). At times, various branch offices have experienced connectivity issues over the VPN to Reston. While there is some understanding of these occurrences, there is a desire to increase the stability of the connection as growth continues.
 
-Several years ago, under the leadership of Lewis Franklin, head of infrastructure and operations, individual departments started migrating their servers into Azure. The Active Directory Domain Services (ADDS) team has deployed several Domain Controller (DC) Virtual Machines (VM) to a virtual network in the West Central US region. This region was chosen due to its proximity to the Cheyenne Headquarters. Some effort was made to follow the guidance of Microsoft on the use of Active Directory (AD) in Azure, but some configuration gaps remain.
+Several years ago, under the leadership of Lewis Franklin, head of infrastructure and operations, individual departments started migrating their servers into Azure. The Active Directory Domain Services (ADDS) team has deployed several Domain Controller (DC) Virtual Machines (VM) to a virtual network in the East US 2 region. This region was chosen due to its proximity to the Reston Headquarters. Some effort was made to follow the guidance of Microsoft on the use of Active Directory (AD) in Azure, but some configuration gaps remain.
 
-The web application team has also deployed the Ordering application within the same West Central US region. While they do not have administrative rights for the SQL VMs that provide database services for the web application, they do have database rights and can access the databases through normal SQL toolsets.
+The web application team has also deployed the Ordering application within the same East US 2 region. While they do not have administrative rights for the SQL VMs that provide database services for the web application, they do have database rights and can access the databases through normal SQL toolsets.
 
-Taking their cue from the AD and Web teams, the Database Administrators have also rolled out their SQL servers onto Azure VMs, choosing to host them in the West Central US region as well.
+Taking their cue from the AD and Web teams, the Database Administrators have also rolled out their SQL servers onto Azure VMs, choosing to host them in the East US 2 region as well.
 
 The Marketing department has recently been tasked with moving their server workloads into Azure by rebuilding each application. They have begun building their servers utilizing a single Azure storage account. They have around 40-50 VMs already but anticipate continued growth.
 
@@ -192,7 +192,7 @@ The Marketing department has recently been tasked with moving their server workl
 
 Contoso is connected via a Windows Server Routing and Remote Access Service (RRAS) VPN connection to Azure via a Site-to-Site Gateway. They are looking for options to provide redundancy for the hybrid connectivity to Azure due to recent network issues.
 
-While the Azure deployments have served Contoso well so far, they are concerned about expanding workloads for their Seattle datacenter. Janet Lewis, business continuity team director, says, "it appears that while services have moved to the cloud, the overall paradigm has not moved from the single datacenter model we have always deployed."
+While the Azure deployments have served Contoso well so far, they are concerned about expanding workloads for their Des Moines datacenter. Janet Lewis, business continuity team director, says, "it appears that while services have moved to the cloud, the overall paradigm has not moved from the single datacenter model we have always deployed."
 
 Over a recent three-day holiday weekend, there was an incident with one of the ADDS Domain Controllers where the disk drive housing the AD database filled up and corrupted the database. This prompted a high-priority support call to Microsoft. While the damage was mitigated, the team was fortunate that the consequences were minimal.
 
@@ -204,9 +204,9 @@ The Human Resources department has requested that IT move their server workloads
 
 Richard Wade, infrastructure lead, is researching options for making the overall Azure infrastructure more resilient; including looking at technologies to help recover from an Azure region-wide outage. He also is interested in protecting against data corruption or accidental deletion of data or VMs.
 
-For the current ADDS implementation in Azure, the team has deployed a single domain controller in the West Central US. region. It is running on a Standard D1 instance with with Active Directory deployed on the C: drive.
+For the current ADDS implementation in Azure, the team has deployed a single domain controller in the East US 2. region. It is running on a Standard D1 instance with with Active Directory deployed on the C: drive.
 
-![This image represents a single domain controller in the West Central US region.](images/Whiteboarddesignsessiontrainerguide-BuildingaresilientIaaSarchitectureimages/media/image4.png "West Central US region - Single Domain Controller")
+![This image represents a single domain controller in the East US 2 region.](images/Whiteboarddesignsessiontrainerguide-BuildingaresilientIaaSarchitectureimages/media/image4.png "East US 2 region - Single Domain Controller")
 
 Additionally, the SQL Server VM and Web site implementation are also housed at the same region. SQL has been deployed on a single VM with multiple disks. One disk is utilized for the data; the other disk is for backup and log file storage. The underlying storage account is configured for geo replication.
 
@@ -229,7 +229,7 @@ Contoso's business critical applications include:
 
 1.  The IT department is using outdated guidance on Azure and they need updated guidance on current architectural and deployment best practices.
 
-2.  They need assistance with enabling connectivity and authentication for new infrastructure that will be deployed for the Seattle office.
+2.  They need assistance with enabling connectivity and authentication for new infrastructure that will be deployed for the Des Moines office.
 
 3.  Identify the infrastructure requirements that should to be configured to provide redundancy and resiliency to the web servers and the database servers for the ordering application for scale, backup and resiliency.
 
@@ -273,7 +273,7 @@ Directions: With all participants at your table, answer the following questions 
 
 Directions: With all participants at your table, respond to the following questions on a flip chart.
 
-The desired outcome is to have authentication deployed using best practices in both the Cheyenne and the Seattle regions for current and future application migration.
+The desired outcome is to have authentication deployed using best practices in both the Reston and the Des Moines regions for current and future application migration.
 
 For the ordering web app, redundancy and protection in case of failure is the main goal for all components of the design and the application should tolerate a failure in either region. The design should include network resiliency, as well as backup and restore methods in case of failure of the physical or VMs.
 
@@ -282,7 +282,7 @@ Directions: Design the solution architecture by drawing it on the board, and sep
 *Virtual Network design in Azure*
 
 1.  Document and diagram how you will build redundant Virtual Networks for Contoso. Address the following design points:
-    -   Must allow for connectivity between two regions close to the Cheyenne and Seattle data centers
+    -   Must allow for connectivity between two regions close to the Reston and Des Moines data centers
     -   Address the need for redundancy and resiliency in the site-to-site VPN connectivity from Contoso's offices to Azure
     -   How will you design the address space and subnets to support Contoso's requirements?
 
@@ -394,23 +394,23 @@ Directions: Tables reconvene with the larger group to hear the facilitator/SME s
 
 1. Document and diagram how you will build redundant Virtual Networks for Contoso. Address the following design points:
 
-    -   Must allow for connectivity between two regions close to the Cheyenne and Seattle data centers
+    -   Must allow for connectivity between two regions close to the Reston and Des Moines data centers
     -   Address the need for redundancy and resiliency in the site-to-site VPN connectivity from Contoso's offices to Azure
     -   How will you design the address space and subnets to support Contoso's requirements?
 
 *Solution*
 
--   West Central US and West US 2 will be used due to their proximity to the Cheyenne and Seattle offices. Virtual Network Peering will be implemented for connectivity between the regions.
+-   East US 2 and Central US will be used due to their proximity to the Reston and Des Moines offices. Virtual Network Peering will be implemented for connectivity between the regions.
 -   The Routing and Remote Access Servers (RRAS), should be configured using Windows Server Clustering so there is high availability on the on-premises site as well.
 -   Address space and subnet design could use several combinations. Some example configurations:
 
-    **West Central US (10.0.0.0/16)**
+    **East US 2 (10.0.0.0/16)**
 
     -   Apps: 10.0.0.0/24
     -   Data: 10.0.1.0/24
     -   Identity: 10.0.2.0/24
 
-    **West US 2 (172.16.0.0/16)**
+    **Central US (172.16.0.0/16)**
 
     -   Apps: 172.16.0.0/24
     -   Data: 172.16.1.0/24
@@ -439,10 +439,10 @@ Resilient benefits:
 Address Spaces:
 
 -   On-Premises: 192.168.0.0/16 (Domain Controllers: 192.168.1.10 & 192.168.1.11)
--   West Central US: 10.0.0.0/16 (Domain Controllers: 10.0.2.4 & 10.0.2.5)
--   West US 2: 172.16.0.0/16 (Domain Controller: 172.16.2.4)
+-   East US 2: 10.0.0.0/16 (Domain Controllers: 10.0.2.4 & 10.0.2.5)
+-   Central US: 172.16.0.0/16 (Domain Controller: 172.16.2.4)
 
-Network Security Groups for the West Central US Virtual Network|
+Network Security Groups for the East US 2 Virtual Network|
 
 **Apps Tier NSGs** 
 ||||||||
@@ -469,9 +469,9 @@ Network Security Groups for the West Central US Virtual Network|
 |  ADDS Repl     |       110          |  192.168.1.10   |  ANY          |  ANY                   |  10.0.3.0/24     |  ANY                  |  ALLOW    |
 |  ADDS Repl     |       120          |  192.168.1.11   |  ANY          |  ANY                   |  10.0.3.0/24     |  ANY                  |  ALLOW    |
 
-**Network Security Groups for the West US 2 Virtual Network**
+**Network Security Groups for the Central US Virtual Network**
 
-Since Contoso has not deployed any additional infrastructure to West US 2 the only ports needed are for administration and replication of Active Directory.
+Since Contoso has not deployed any additional infrastructure to Central US the only ports needed are for administration and replication of Active Directory.
 
 **Identity Tier NSGs**       
 ||||||||    
@@ -493,9 +493,9 @@ Resilient benefits:
     *AD configuration details*
 
     -   Active Directory Domain Service (ADDS) Domain Controllers (DC) are deployed into Azure virtual machines. These are extensions of the on-premises AD DS DCs and allow for resiliency for the authentication and authorization mechanism that Contoso employees use today.
-    -  Configure multiple VMs as Domain Controllers in the West Central U.S. region and two others in the West US 2. ADDS Sites and Services will be configured with the two Azure regional virtual networks as new sites in AD.
-        -  For Domain Controllers in West Central US, Availability Sets will be configured.
-        -  For Domain Controllers in West US 2, Availability Zones will be configured.
+    -  Configure multiple VMs as Domain Controllers in the West Central U.S. region and two others in the Central US. ADDS Sites and Services will be configured with the two Azure regional virtual networks as new sites in AD.
+        -  For Domain Controllers in East US 2, Availability Sets will be configured.
+        -  For Domain Controllers in Central US, Availability Zones will be configured.
     -   Each Domain Controller will be configured with a Data Disk for the ADDS database and will be configured to back up via Azure Backup for disaster recovery and business continuity. To avoid any issue with the ADDS DB, this data disk needs to be configured with caching set to NONE.
 
     For details on restoring ADDS DCs see the following: 
@@ -520,7 +520,7 @@ Resilient benefits:
 
     The IIS Web Servers will be configured in the Apps Subnet and built on VMs. To help manage the load and provide performance options, the servers will be deployed into a Scale Set within Azure. This will allow Contoso the option to scale-up, scale-out, and even scale-down and scale-in based on the need. It will cease Contoso's practice of scaling manually as it is rife with issues and lacks the automated scaling that can be provided otherwise for resiliency.
 
-    Contoso's use of an Availability Set for the Web farm VMs should be applauded. Availability Sets provide protection and resiliency against unplanned and planned downtime. We configured the availability set to spread the VMs across **three** fault domains and **five** update domains. To minimize disruption, the application will remain in West Central US. Availability Zones are not available in all Azure regions, however as they are made available to more regions, Contoso can achieve an even higher level of resiliency by moving to them.
+    Contoso's use of an Availability Set for the Web farm VMs should be applauded. Availability Sets provide protection and resiliency against unplanned and planned downtime. We configured the availability set to spread the VMs across **three** fault domains and **five** update domains. To minimize disruption, the application will remain in East US 2. Availability Zones are not available in all Azure regions, however as they are made available to more regions, Contoso can achieve an even higher level of resiliency by moving to them.
 
     A change of the Health Probe on the Load Balancer to use an HTTP health probe rather than a TCP probe is wise. The HTTP probe will monitor for HTTP code 200, indicating a healthy web site. If anything, other than a 200 is detected (such as the HTTP 500 the customers experienced), then that server will be removed from the rotation until the site is deemed healthy again.
 
@@ -534,7 +534,7 @@ Resilient benefits:
 
     *SQL Always-On configuration details*
 
-    SQL Server is critical to the availability of the applications at Contoso. SQL will be implemented using a total of three Servers configured using Always-On Availability Groups. The two servers in West Central US comprise a single primary and a secondary, synchronously replica of the database. The two SQL servers will be deployed into an Azure availability set and are configured behind an internal load balancer which will allow client machines to connect to the listener which will direct traffic to the machines that is designated as the primary replica machine.
+    SQL Server is critical to the availability of the applications at Contoso. SQL will be implemented using a total of three Servers configured using Always-On Availability Groups. The two servers in East US 2 comprise a single primary and a secondary, synchronously replica of the database. The two SQL servers will be deployed into an Azure availability set and are configured behind an internal load balancer which will allow client machines to connect to the listener which will direct traffic to the machines that is designated as the primary replica machine.
 
     The SQL Servers will use premium managed disks with a database and log files on separate disks. The TempDB will be housed on the local host SSD drive and split to match the number of cores in the VM.
 
@@ -631,7 +631,7 @@ Resilient benefits:
 
     **Potential answer**
     
-    Contoso can restructure the way IT budgets are spent and ultimately save funds by rolling out the infrastructure into Azure as opposed to rolling out the infrastructure in the Cheyenne office. By building out the infrastructure in Azure there is no upfront capital investment. The cost moves to an operating expense in a pay only for what you need and use model. This frees up Contoso's capital for other investments which are more strategic to the growth of the company. This is also done in a more professional way in that Azure datacenters are world-class, enterprise-level datacenters providing a server environment that Contoso could never build on their own. Also, deploying VMs in Azure provides resiliency at a lower cost than physical hardware.
+    Contoso can restructure the way IT budgets are spent and ultimately save funds by rolling out the infrastructure into Azure as opposed to rolling out the infrastructure in the Reston office. By building out the infrastructure in Azure there is no upfront capital investment. The cost moves to an operating expense in a pay only for what you need and use model. This frees up Contoso's capital for other investments which are more strategic to the growth of the company. This is also done in a more professional way in that Azure datacenters are world-class, enterprise-level datacenters providing a server environment that Contoso could never build on their own. Also, deploying VMs in Azure provides resiliency at a lower cost than physical hardware.
 
     Also, consider that the cost of downtime might far outweigh the cost of the resiliency being built into the environment.
 
