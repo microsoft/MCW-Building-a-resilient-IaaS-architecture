@@ -30,6 +30,7 @@ Microsoft and the trademarks listed at <https://www.microsoft.com/en-us/legal/in
     - [Before the hands\-on lab](#before-the-hands-on-lab)
         - [Task 1: Create a Virtual Machine using the Azure portal](#task-1-create-a-virtual-machine-using-the-azure-portal)
         - [Task 2: Connect to the VM and download the student files](#task-2-connect-to-the-vm-and-download-the-student-files)
+        - [Task 3: Install Azure PowerShell](#task-3-install-azure-powershell)
     - [Summary](#summary)
 
 # Building a resilient IaaS architecture before the hands-on lab setup guide 
@@ -158,8 +159,22 @@ In this exercise, you build a Lab VM followed by preparing an Azure infrastructu
 
 14. The **Downloads** folder will open, ***Right-click*** the zip file, and click **Extract All**. In the **Extract Compressed (Zipped) Folders** window, enter **C:\\HOL** in the **Files will be extracted to this folder** dialog. Click the **Extract** button.
 
+### Task 3: Install Azure PowerShell
+
+1. Open a PowerShell prompt as an administrator (Right click > More > Run as administrator).
+
+2. Execute the following command:
+
+    ```powershell
+    Install-Module -Name AzureRM -AllowClobber
+    ```
+
+    ![The first time you use the PSGallery you will see a message related to an untrusted repository. Answer Yes or Yes to all to complete the installation..](images/Setup/image28.png "PSGallery untrusted repository")
+
+    **Note**: By default, the PowerShell gallery isn't configured as a trusted repository for PowerShellGet. The first time you use the PSGallery you will see a message related to an untrusted repository. Answer *Yes* or *Yes to all* to complete the installation.
+
 ## Summary
 
-In this exercise, you setup a lab virtual machine and downloaded the required setup files. 
+In this exercise, you setup a lab virtual machine,  downloaded the required setup files, and installed Azure PowerShell. 
 
 You should follow all steps provided *before* attending the Hands-on lab.
