@@ -9,7 +9,7 @@ Hands-on lab step-by-step
 </div>
 
 <div class="MCWHeader3">
-August 2018
+November 2018
 </div>
 
 
@@ -35,10 +35,10 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Exercise 1: Prepare connectivity between regions](#exercise-1-prepare-connectivity-between-regions)
         - [Task 1: Deploy the lab environment](#task-1-deploy-the-lab-environment)
         - [Task 2: Create a VNET in the second region](#task-2-create-a-vnet-in-the-second-region)
-        - [Task 3: Configure VNET Peering between region](#task-3-configure-vnet-peering-between-region)
-    - [Exercise 2: Build the DCs in for resiliency](#exercise-2-build-the-dcs-in-for-resiliency)
+        - [Task 3: Configure VNET Peering between Azure regions](#task-3-configure-vnet-peering-between-azure-regions)
+    - [Exercise 2: Build the primary DCs for resiliency](#exercise-2-build-the-primary-dcs-for-resiliency)
         - [Task 1: Create Resilient Active Directory Deployment](#task-1-create-resilient-active-directory-deployment)
-        - [Task 2: Create the Active Directory deployment in the second region](#task-2-create-the-active-directory-deployment-in-the-second-region)
+        - [Task 2: Create the Active Directory deployment in the second Azure region](#task-2-create-the-active-directory-deployment-in-the-second-azure-region)
         - [Task 3: Add data disks to Active Directory domain controllers (both regions)](#task-3-add-data-disks-to-active-directory-domain-controllers-both-regions)
         - [Task 4: Format data disks on DCs and configure DNS settings across connection](#task-4-format-data-disks-on-dcs-and-configure-dns-settings-across-connection)
         - [Task 5: Promote DCs as additional domain controllers](#task-5-promote-dcs-as-additional-domain-controllers)
@@ -47,7 +47,7 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
         - [Task 1: Deploy SQL Always-On Cluster](#task-1-deploy-sql-always-on-cluster)
         - [Task 2: Convert the SQL deployment to Managed Disks](#task-2-convert-the-sql-deployment-to-managed-disks)
         - [Task 3: Build a scalable and resilient web tier](#task-3-build-a-scalable-and-resilient-web-tier)
-        - [Summary](#summary)
+        - [Summary](#summary-1)
     - [Exercise 4: Configure SQL Server Managed Backup](#exercise-4-configure-sql-server-managed-backup)
         - [Task 1: Create an Azure Storage Account](#task-1-create-an-azure-storage-account)
         - [Task 2: Configure managed backup in SQL Server](#task-2-configure-managed-backup-in-sql-server)
@@ -75,7 +75,7 @@ Contoso has asked you to deploy their infrastructure in a resilient manner to in
 ## Solution architecture
 
 Highly resilient deployment of Active Directory Domain Controllers in Azure.
-    ![Highly resilient deployment of Active Directory Domain Controllers in Azure.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image2.png "Solution architecture")
+    ![Highly resilient deployment of Active Directory Domain Controllers in Azure.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image11.png "Solution architecture")
 
 Deployment of a web app using scale sets, and a highly available SQL Always On deployment.
     ![Deployment of a web app using scale sets, and a highly available SQL Always On deployment.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image3.png "Solution architecture")
@@ -86,13 +86,11 @@ Deployment of a web app using scale sets, and a highly available SQL Always On d
 
 2.  Virtual Machine Built during this hands-on lab or local machine with the following:
 
-    a.  Visual Studio 2017 Community or Enterprise Edition
-
-    b.  Latest Azure PowerShell Cmdlets
-
-    c.  <https://azure.microsoft.com/en-us/downloads/>
-
-    d.  Ensure you reboot after installing the SDK or Azure PowerShell will not work correctly.
+    - Visual Studio 2017 Community or Enterprise Edition
+    - Latest Azure PowerShell cmdlets
+        - <https://azure.microsoft.com/en-us/downloads/>
+        - <https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps>
+        - Ensure you reboot after installing the SDK or Azure PowerShell may not work correctly.
 
 ### Help references
 |    |            |
@@ -125,9 +123,11 @@ Contoso is planning to deploy infrastructure in multiple regions in Azure to pro
 
     ![A screen with the Deploy to Azure button visible.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image24.png "Sample Application in GitHub")
 
-4.  Specify the Resource group name as **ContosoRG** and the region as **West Central US**, **check the two check boxes** on the page and click **Purchase**.
+4.  Specify the Resource group name as **ContosoRG** and the region as **East US 2**, check the **I agree to the terms and conditions state above** checkbox on the page and click **Purchase**.
 
-    ![The custom deployment screen with ContosoRG as the resource group and West Central US as the region.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image25.png "Custom deployment")
+    ![The custom deployment screen with ContosoRG as the resource group and West Central US as the region.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image111.png "Custom deployment")
+    
+    **Note**: The deployment may take up to 20 minutes.
 
 5.  Once the deployment is successful, validate the deployment by opening the **CloudShopWeb** virtual machine and navigating your browser to its public IP address.
 
@@ -137,35 +137,28 @@ Contoso is planning to deploy infrastructure in multiple regions in Azure to pro
 
 1.  Browse to the Azure portal and authenticate at <https://portal.azure.com/>.
 
-2.  In the left pane, click **+ Create Resource**.
+2.  In the left pane, click **+ Create a resource**.
 
 3.  In the **New** blade, select **Networking \>** **Virtual Network**.
 
     ![In the New Blade, under Azure Marketplace, Networking is selected. Under Featured, Virtual Network is selected.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image28.png "New Blade")
 
-4.  For the **Create virtual network** settings, enter the following information:
+4.  In the **Create virtual network** blade, enter the following information:
 
-    -   Name: **VNET2**
+    - Name: **VNET2**
+    - Address space: **172.16.0.0/16**
+    - Subscription: **Choose your subscription**
+    - Resource group (create new): **CUSRG**
+    - Location: **Central US**
+    - Subnet name: **Apps**
+    - Subnet address range: **172.16.0.0/24**
+    - DDoS protection: **Basic**
+    - Service endpoints: **Disabled**
+    - Firewall: **Disabled**
 
-    -   Address space: **172.16.0.0/16**
+    ![A blade showing the creation of a virtual network in the Azure portal.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image112.png "Create virtual network")
 
-    -   Subscription: **Choose your subscription**
-
-    -   Resource group: **Create new -- WUS2RG**
-
-    -   Location: **West US 2**
-
-    -   Subnet name: **Apps**
-
-    -   Subnet address range: **172.16.0.0/24**
-  
-    -   DDoS protection: **Basic**
-
-    -   Service endpoints: **Disabled**
-
-    -   Click the **Create** button to continue.
-
-        ![A blade showing the creation of a virtual network in the Azure portal.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/2018-08-24-10-30-06.png "Create virtual network")
+1. Click the **Create** button to continue.
 
 5.  Once the deployment is complete, add two more subnets to the virtual network. To do this, select the **Subnets \>** icon in the **Settings** area.
 
@@ -176,28 +169,24 @@ Contoso is planning to deploy infrastructure in multiple regions in Azure to pro
     ![Screenshot of the Subnets button.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image31.png "Subnets button")
 
     -   Name: **Data**
-
     -   Address range (CIDR block): **172.16.1.0/24**
-
     -   Click the **OK** button to add this subnet.
 
-        ![In the Add subnet blade, the Name field is set to Data, and Add range (CIDR block) is set to 172.16.1.0/24.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image32.png "Add subnet blade")
+    ![In the Add subnet blade, the Name field is set to Data, and Add range (CIDR block) is set to 172.16.1.0/24.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image32.png "Add subnet blade")
 
 7.  Once the subnet is created successfully, repeat the above step for an **Identity** subnet with the following settings:
 
     -   Name: **Identity**
-
     -   Address range (CIDR block): **172.16.2.0/24**
-
     -   Click the **OK** button to add this subnet:
 
-        ![In the Add subnet blade, the Name field is set to Identity, and Add range (CIDR block) is set to 172.16.2.0/24.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image33.png "Add subnet blade")
+    ![In the Add subnet blade, the Name field is set to Identity, and Add range (CIDR block) is set to 172.16.2.0/24.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image33.png "Add subnet blade")
 
 8.  The subnets will look like this once complete:
 
     ![The following subnets display: Apps, Data, and Identity.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image34.png "Subnets")
 
-### Task 3: Configure VNET Peering between region
+### Task 3: Configure VNET Peering between Azure regions
 
 1.  Open the first virtual network (VNET1) by clicking **All Services -\> Virtual networks** and clicking the name.
 
@@ -207,7 +196,7 @@ Contoso is planning to deploy infrastructure in multiple regions in Azure to pro
 
 3.  Name the peering, **VNET1TOVNET2** and change the Virtual network dropdown to **VNET2** click **Allow forwarded traffic,** and then click **OK**.
 
-    ![A screen that shows the name Peering, the virtual network VNET2, and Allow forwarded traffic checked.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image36.png "Add peering")
+    ![A screen that shows the name Peering, the virtual network VNET2, and Allow forwarded traffic checked.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image118.png "Add peering")
 
 4.  Open the second virtual network (VNET2) by clicking **All Services -\> Virtual networks** and clicking the name.
 
@@ -217,9 +206,9 @@ Contoso is planning to deploy infrastructure in multiple regions in Azure to pro
 
 6.  Name the peering, **VNET2TOVNET1** and change the Virtual network dropdown to **VNET1** click **Allow forwarded traffic,** and then click **OK**.
 
-    ![A screen that shows the name Peering, the virtual network VNET, and Allow forwarded traffic checked.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image37.png "Add peering")
+    ![A screen that shows the name Peering, the virtual network VNET, and Allow forwarded traffic checked.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image119.png "Add peering")
 
-## Exercise 2: Build the DCs in for resiliency
+## Exercise 2: Build the primary DCs for resiliency
 
 Duration: 30 minutes
 
@@ -243,132 +232,107 @@ In this task, you will change the disk cache settings on the existing domain con
 
     ![In the Edit blade, under Host Caching, None is selected. At the top, the Save button is selected.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image40.png "Edit blade")
 
-**Note**: In production, we would not want to have any OS drives that do not have read/write cache enabled. This machine will be decommissioned, but first, we want to make sure the AD Database and SYSVOL will not be corrupted during our updates.
+    **Note**: In production, we would not want to have any OS drives that do not have read/write cache enabled. This machine will be decommissioned, but first, we want to make sure the AD Database and SYSVOL will not be corrupted during our updates.
 
-5.  In the left pane, click **+ Create Resource**.
+5.  In the left pane, click **+ Create a resource**.
 
-6.  In the **New** blade, select **Compute** **\>** **Windows Server 2016 Datacenter**.
+6.  In the **New** blade, select **Compute** **\>** **Windows Server 2016 VM**.
 
     ![In the New blade, under Azure Marketplace, Compute is selected. Under Featured, Windows Server 2016 Datacenter is selected.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image41.png "New blade")
 
 7.  In the **Create virtual machine** blade, enter the **Basics** information:
 
-    -   Name: **DC01**
-
-    -   VM disk type: **Premium SSD**
-
-    -   Username: **demouser**
-
-    -   Password: **demo\@pass123**
-
-    -   Confirm password: **demo\@pass123**
-
     -   Subscription: **Select your subscription**
+    -   Resource group (create new): **EU2ADRG**
+    -   Virtual machine name: **DC01**
+    -   Size: **Standard DS1\_v2**
+    -   Region: **East US 2**
+    -   Username: **demouser**
+    -   Password: **demo\@pass123**
+    -   Confirm password: **demo\@pass123**
+    -   Public inbound ports: **Allow selected ports**
+    -   Select inbound ports: **RDP (3389)**
 
-    -   Resource group: **Create New - ADRG**
+    ![A screen that shows the basics blade of creating a new VM. The name is DC01, the user name is demouser, the resource group is EU2ADRG, and the location is East US 2.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image113.png "Basics")
 
-    -   Location: **West Central US**
+8. For **Availability options**, select **Availability set**. Select **Create new** and enter the name **ADAV** and click **OK**.
 
-    -   Click the **OK** button to continue.
+    ![Azure portal screenshot showing the Create new availability set blade with the name set to ADAV.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image114.png "Create new Availability Set")
 
-        ![A screen that shows the basics blade of creating a new VM. The name is DC01, the user name is demouser, the resource group is ADRG, and the location is West Central US.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image42.png "Basics")
+9. Click the **Networking** tab and select the existing virtual network **VNET1** and the **Identity** subnet.
 
-8.  For the **Size**, select **DS1\_V2**. You may have to select the **View All** option if it is not one of the recommended sizes.
+    ![Azure portal screenshot showing the Networking tab of the VM create blade, selecting the virtual network VNET1.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image115.png "Networking settings")
 
-9.  In the **Settings** options, choose the following configuration (accept the defaults if not specified below):
-  
-    -   Availability set: **Create new, ADAV**
+10. Click the **Management** tab and configure as follows:
 
-    -   Storage Use Managed Disks: **Yes**
+    - Boot diagnostics: **On**
+    - Diagnostics storage account: **Create new and select a unique name**
+    - Enable backup: **On**
+    - Recovery Services vault: **Create new**
+    - Recovery Services vault name: **BackupVault**
+    - Resource group (create new): **BackupVaultRG**
 
-    -   Virtual Network: **Click the name to choose VNET1**
+    ![Azure portal screenshot showing the Management tab of the VM create blade, selecting the diagnostics and backup settings.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image116.png "Management settings")
+    
+    **Note**: Backup with a Domain Controller is a supported scenario. Care should be taken on restore. For more information see the following: <https://docs.microsoft.com/en-us/azure/backup/backup-azure-arm-restore-vms#backup-for-restored-vms>.
 
-    -   Subnet: **Choose Identity as the subnet**
+11. Click the **Review + create** button or click on the **Review + create** tab. There will be a final validation and when this is passed, click the **Create** button to complete the deployment.
 
-    -   Select public inbound ports: **RDP (3389)**
+12. Give the deployment a few minutes to build the Availability Set resource. Then, repeat the virtual machine creation steps to create **DC02**, as that will be another Domain Controller making sure to place it in the **ADAV** availability set and select the existing diagnostics storage account and the existing **BackupVault**.
 
-    -   Auto-shutdown: **Off**
+    ![Azure portal screenshot showing the Review and create screen for a virtual machine named DC02.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image117.png "Create new VM validation") 
 
-    -   Guest OS Diagnostics: **Enabled**
+### Task 2: Create the Active Directory deployment in the second Azure region
 
-    -   Backup: **Enabled**
+In this task, you will deploy Active Directory in the second region, so identity is available for new workloads. In this region, an additional level of resiliency will be introduced by using Availability Zones for the virtual machines hosting Active Directory.
 
-    -   Recovery Services Vault: **Create New -\> BackupVault**
+1.  In the left pane, click **+ Create a resource**.
 
-    -   Resource Group: **Create New -\> BackupVaultRG**
+2.  In the **New** blade, select **Virtual Machines \>** **Windows Server 2016 VM**.
 
-    -   Then, click the **OK** button to continue to the **Summary**
-
-    > **Note**: Backup with a Domain Controller is a supported scenario. Care should be taken on restore. For more information see the following: <https://docs.microsoft.com/en-us/azure/backup/backup-azure-arm-restore-vms#backup-for-restored-vms>.
-
-
-    There will be a final validation and when this is passed, click the **Create** button to complete the deployment.
-
-10. Give the deployment a few minutes to build the Availability Set resource. Then, repeat those steps to create **DC02**, as that will be another Domain Controller making sure to place it in the **ADAV** availability set and the existing **BackupVault**.
-
-### Task 2: Create the Active Directory deployment in the second region
-
-In this task, you will deploy Active Directory in the second region, so identity is available for new workloads.
-
-1.  In the left pane, click **+ Create Resource**.
-
-2.  In the **New** blade, select **Virtual Machines \>** **Windows Server 2016 Datacenter**.
-
-    ![In the New blade, under Azure Marketplace, Compute is selected. Under Featured, Windows Server 2016 Datacenter is selected.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image41.png "New blade")
+    ![In the New blade, under Azure Marketplace, Compute is selected. Under Featured, Windows Server 2016 VM is selected.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image41.png "New blade")
 
 3.  In the **Create virtual machine** blade, enter the **Basics** information:
 
-    -   Name: **DC03**
-
-    -   VM disk type: **SSD**
-
-    -   Username: **demouser**
-
-    -   Password: **demo\@pass123**
-
-    -   Confirm password: **demo\@pass123**
-
     -   Subscription: **Select your subscription**
+    -   Resource group (create new): **CUSADRG**
+    -   Virtual machine name: **DC03**
+    -   Size: **Standard DS1\_v2**
+    -   Region: **Central US**
+    -   Username: **demouser**
+    -   Password: **demo\@pass123**
+    -   Confirm password: **demo\@pass123**
+    -   Public inbound ports: **Allow selected ports**
+    -   Select inbound ports: **RDP (3389)**
 
-    -   Resource group: **WUS2ADRG**
+    ![Azure portal screenshot showing the Basics tab of the new VM create blade for DC03.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image120.png "Create new VM")
 
-    -   Location: **West US 2**
+4. For **Availability options**, select **Availability zone**. Select zone **1**.
 
-    -   Click the **OK** button to continue.
+    ![Azure portal screenshot the selection of Availability Zones and Zone 1.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image121.png "Select availability zone")
 
-        ![In this screen, the DC03 VM is being configured with demouser as the username, and the resource group is set to WUS2ADRG and the location is West US 2.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image45.png "Basics blade")
+9. Click the **Networking** tab and select the existing virtual network **VNET2** and the **Identity** subnet.
 
-4.  For the **Size**, select **Standard DS1 V2**. You may have to select the **View All** option if it is not one of the recommended sizes.
+    ![Azure portal screenshot showing the Networking tab of the VM create blade, selecting the virtual network VNET2.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image122.png "Networking settings")
 
-5.  Click the **Select** button to continue to **Settings**.
+1. Click the **Management** tab and configure as follows:
 
-6.  In the **Settings** options, choose the following configuration (accept the defaults if not specified below):
+    - Boot diagnostics: **On**
+    - Diagnostics storage account: **Create new and select a unique name**
+    - Enable backup: **On**
+    - Recovery Services vault: **Create new**
+    - Recovery Services vault name: **BackupVault2**
+    - Resource group (create new): **BackupVault2RG**
 
-    -   Availability set: **Create new, ADAV2**
+    ![Azure portal screenshot showing the Management tab of the VM create blade, selecting the diagnostics and backup settings.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image123.png "Management settings")
+    
+    **Note**: Backup with a Domain Controller is a supported scenario. Care should be taken on restore. For more information see the following: <https://docs.microsoft.com/en-us/azure/backup/backup-azure-arm-restore-vms#backup-for-restored-vms>.
 
-    -   Storage Use Managed Disks: **Yes**
+1. Click the **Review + create** button or click on the **Review + create** tab. There will be a final validation and when this is passed, click the **Create** button to complete the deployment.
 
-    -   Virtual Network: **Click the name to choose VNET2**
+2. Give the deployment a few minutes to start and repeat those steps to create **DC04**, as that will be another Domain Controller making sure to place it in Availability Zone **2** and the existing **BackupVault2**.
 
-    -   Subnet: **Choose Identity as the subnet**
-
-    -   Select public inbound ports: **RDP (3389)**
-
-    -   Auto-shutdown: **Off**
-
-    -   Guest OS Diagnostics: **Enabled**
-
-    -   Backup: **Enabled**
-
-    -   Recovery Services Vault: **Create New -\> BackupVault2**
-
-    -   Resource Group: **Create New -\> BackupVault2RG**
-
-    -   Then, click the **OK** button to continue to the **Summary**.
-
-7.  There will be a final validation. When this is passed, click the **Create** button to complete the deployment.
-
-8. Give the deployment a few minutes to build the Availability Set resource. Then, repeat those steps to create **DC04**, as that will be another Domain Controller making sure to place it in the **ADAV2** availability set and the existing **BackupVault2**.
+    ![Azure portal screenshot showing the review and create tab of the new VM create blade for DC04.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image124.png "Review and create tab")
 
 ### Task 3: Add data disks to Active Directory domain controllers (both regions)
 
@@ -387,27 +351,22 @@ In this task, you will deploy Active Directory in the second region, so identity
 5.  On the Create managed disk blade, enter the following, and click **Create**:
 
     -   Name: **DC01-Data-Disk-1**
-
-    -   Resource group: **Use existing / ADRG**
-
+    -   Resource group: **Use existing / EU2ADRG**
     -   Account Type: **Premium SSD**
-
     -   Source Type: **None (empty disk)**
-
     -   Size: **32**
-
 
 6.  Once the disk is created, the portal will move back to the **Disks** blade. Locate the new disk under **Data Disks**, change the **HOST CACHING** to **None**, and click **Save**.
 
-    ![On the Disks blade, under Host Caching, None is selected. At the top, Save is selected.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image51.png "Disks blade")
+    ![On the Disks blade, under Host Caching, None is selected. At the top, Save is selected.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image125.png "Disks blade")
 
 7.  Perform these same steps for **DC02** naming the disk **DC02-Data-Disk-1**. Also, make sure the Host caching is set to **None**.
 
-8.  Perform the add disk steps for **DC03** and **DC04** naming the disks **DC03-Data-Disk-1** and **DC04-Data-Disk1** respectively. Make sure to set the Host caching to **None**.
+8.  Perform the add disk steps for **DC03** and **DC04** naming the disks **DC03-Data-Disk-1** and **DC04-Data-Disk1** respectively. Make sure to set the Host caching to **None**. For these disks, select the resource group **CUSADRG**.
 
 ### Task 4: Format data disks on DCs and configure DNS settings across connection
 
-1.  Click on **DC01** on the Azure dashboard.
+1.  Browse to **DC01** in the Azure portal.
 
 2.  Click the **Connect** icon on the menu bar to RDP into the server.
 
@@ -417,7 +376,7 @@ In this task, you will deploy Active Directory in the second region, so identity
 
     ![On the Windows security login window, the Use a different account option is circled.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image53.png "Windows security login window")
 
-    > **Note**: You might have to click "Use a different account," depending on which OS you are connecting from to put in the demouser credentials.
+    **Note**: You might have to click "Use a different account," depending on which OS you are connecting from to put in the demouser credentials.
 
 4.  Click **Yes** to continue to connect to DC01.
 
@@ -455,7 +414,7 @@ In this task, you will deploy Active Directory in the second region, so identity
 
 14. Once Azure notifies the network interface change is saved, repeat these steps on the remaining 3 DCs (**DC02**, **DC03**, and **DC04**).
 
-    > **Note**: Static IP for DC02 should be 10.0.2.6. DC03 should be 172.16.2.4 and DC04 should be 172.16.2.5.
+    **Note**: The Static IP for **DC02** should be 10.0.2.6. **DC03** should be 172.16.2.4 and **DC04** should be 172.16.2.5.
 
 15. In the Azure portal, click **More Services \>** and in the filter, type in **Virtual Networks**. Select **VNET2** from the list.
 
@@ -469,17 +428,17 @@ In this task, you will deploy Active Directory in the second region, so identity
 
 18. At this point, restart **DC03** and **DC04**, so they can get their new DNS Settings.
 
-    > **Note**: DC01 and DC02 received the correct DNS settings from the VNET DNS configured prior to their deployment, as the Customer DNS was set before the hands-on lab for that VNET. DC03 and DC04 must be rebooted to receive the updated DNS settings from their virtual network.
+    **Note**: **DC01** and **DC02** received the correct DNS settings from the VNET DNS configured prior to their deployment, as the custom DNS was set before the hands-on lab for that VNET. **DC03** and **DC04** must be rebooted to receive the updated DNS settings from their virtual network.
 
-19. While these two DCs are rebooting, RDP into **ADVM**, and run the following PowerShell command:
+19. While these two DCs are rebooting, RDP into **ADVM** using the credentials for **demouser**, and run the following PowerShell command:
 
+    ```powershell
+    Set-DnsServerPrimaryZone -Name contoso.com -DynamicUpdate NonsecureAndSecure
     ```
-    Set-DnsServerPrimaryZone -Name contoso.com -DynamicUpdate NonsecureAndSecure 
-    ```
 
-    > **Note**: This would not be done in a production environment, but for purposes of our hands-on lab, we need to perform this step for the SQL Cluster in the coming tasks.
+    **Note**: This would not be done in a production environment, but for purposes of our hands-on lab, we need to perform this step for the SQL Cluster in the coming tasks.
 
-20. After the PowerShell command runs, Sign Out of **ADDC**.
+20. After the PowerShell command runs, sign out of **ADVM**.
 
 ### Task 5: Promote DCs as additional domain controllers 
 
@@ -511,15 +470,19 @@ In this task, you will deploy Active Directory in the second region, so identity
 
     ![In the Extensions blade, the status for CustomScriptExtensions is Provisioning succeeded.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image69.png "Extensions blade")
 
-    > **Note**: While this a live production environment, there would need to be some additional steps to clean up Region 1 and to configure DNS, Sites and Services, Subnets, etc. Please refer to documentation on running Active Directory Virtualized or in Azure for details. ADDC should be demoted gracefully, and if required, a new DC can be added to the ADAVSet and data disk attached for F:\\.
+    **Note**: If this was a live production environment, there would need to be some additional steps to clean up Region 1 and to configure DNS, Sites and Services, Subnets, etc. Please refer to documentation on running Active Directory Virtualized or in Azure for details. ADVM should be demoted gracefully, and if required, a new DC can be added to the ADAV Availability Set and data disk attached for F:\\.
 
-10. Open the settings for VNET2 in the Azure portal. Under DNS servers, remove the exiting custom DNS entry and add the two new domain controller IP addresses and click **Save**.
+10. Open the settings for **VNET2** in the Azure portal. Under DNS servers, remove the exiting custom DNS entry and add the two new domain controller IP addresses and click **Save**.
+
+    - DNS servers
+        - **172.16.2.4**
+        - **172.16.2.5**
 
     ![A screen that shows setting the IP addresses for the two new DNS servers on the virtual network.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image70.png "DNS servers")
 
 ### Summary
 
-In this exercise, you deployed Windows Server Active Directory and configured for resiliency using Azure Managed Disks and Availability Sets in the primary and the failover region.
+In this exercise, you deployed Windows Server Active Directory and configured for resiliency using Azure Managed Disks and Availability Sets in the primary region and Availability Zones in the failover region. Availability Sets offer an SLA of 99.95% and Availability Zones offer an SLA of 99.99%. 
 
 ## Exercise 3: Build web tier and SQL for resiliency
 
@@ -535,27 +498,29 @@ In this task, you will deploy a SQL Always-On cluster using an ARM template that
 
     ![The Deploy to Azure button is highlighted for deploying a sample from GitHub.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image71.png "Sample page")
 
-2.  Specify the resource group name as **CloudShopRG** and ensure the region is set to **West Central US**.
+2.  Specify the resource group name as **CloudShopRG** and ensure the region is set to **East US 2**. Leave the rest of the template parameters with their default values.
 
-    ![The custom deployment blade is displayed with CloudShopRG as the resource group and West Cental US as the location.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image72.png "Custom deployment")
+    ![The custom deployment blade is displayed with CloudShopRG as the resource group and East US 2 as the location.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image126.png "Custom deployment")
 
-3.  Check the checkbox for agreeing to terms and conditions and click Purchase to start the deployment.
+3.  Check the **I agree to the terms and conditions state above** checkbox on the page and click **Purchase**.
 
     ![A screen with the checkbox for I agree to the terms and conditions checked and the purchase button highlighted.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/2018-08-27-20-21-18.png "Terms and Conditions")
 
-4.  Wait until the template deployment is complete before continuing.
+4.  Wait until the template deployment is complete before continuing. 
+
+    **Note**: The deployment may take up to 20 minutes.
 
 5.  Open a remote desktop connection to the **SQLVM-1** virtual machine you created in the previous task, and login using the **contoso\\demouser** account with the password **demo@pass123**.
 
     ![Screenshot of the Connect icon.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image52.png "Connect icon")
 
-6.  Once connected, open the Windows Explorer, check to make sure the F:\\ Drive is present, and the Database was restored to the F:\\Data directory.
+6.  Once connected, open the Windows Explorer, check to make sure the **F:\\** Drive is present, and the Database was restored to the **F:\\Data** directory.
 
 7.  Next, run this command from **SQLVM-1** to create a Cluster for the SQL Always-On Group. **Start \> PowerShell \> Enter**, and execute the following commands:
 
-```
-    New-Cluster -Name CLUST-1 -Node SQLVM-1,SQLVM-2,WITNESSVM -StaticAddress 10.0.1.8 
-```
+    ```powershell
+    New-Cluster -Name CLUST-1 -Node SQLVM-1,SQLVM-2,WITNESSVM -StaticAddress 10.0.1.8
+    ```
 
 8.  This will create a three-node cluster with a static IP address. It is also possible to use a wizard for this task, but the resulting cluster will require additional configuration to set the static IP address to be viable in Azure. This is due to the way Azure DHCP distributes IP addresses causing the cluster to receive the same IP address as the node it is executing on resulting in a duplicate IP address and failure of the cluster service.
 
@@ -593,15 +558,13 @@ In this task, you will deploy a SQL Always-On cluster using an ARM template that
 
 17. Move back to RDP session with **SQLVM-1**.
 
-18. Launch **SQL Server 2016 Management Studio**, and connect to the local instance of SQL Server.
-
-    ![Screenshot of the Microsoft SQL Server Management Studio option.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image83.png "Microsoft SQL Server Management Studio")
+18. Launch **SQL Server Management Studio 17**, and connect to the local instance of SQL Server.
 
 19. Click **Connect** to login to SQL Server.
 
     ![The Connect to Server dialog box displays.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/2018-08-28-19-36-49.png "Connect to Server dialog box")
 
-    > **Note**: Availability Groups require that the databases be in full recovery mode and that an initial backup has been taken. If you deployed via the ARM template this will be done for you.
+    **Note**: Availability Groups require that the databases be in full recovery mode and that an initial backup has been taken. The deployment through an ARM template has completed this for you.
 
 20. Minimize your **SQLVM-1** RDP Session and then Copy from your **LABVM** the file **C:\\HOL\\CreateAGRegion1.sql** and then back on **SQLVM-1** paste it into the **C:\\SQDATA** directory.
 
@@ -615,17 +578,17 @@ In this task, you will deploy a SQL Always-On cluster using an ARM template that
 
 23. Click the **Execute** button to configure the Availability Group.
 
-    ![Screenshot of the Execute button.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image87.png "Execute button")
+    ![Screenshot of the Execute button.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image127.png "Execute button")
 
-    > **Note**: Some security messages are expected. This script was generated by the SQL Server New Availability Group Wizard and modified to support AUTOMATIC\_SEEDING. Automatic seeding makes initializing replicas much easier, and the speed of the process is increased significantly. For more details on automatic seeding and performance improvements please refer to SQLCAT's blog: <https://blogs.msdn.microsoft.com/sqlcat/2016/06/28/sqlsweet16-episode-2-availability-groups-automatic-seeding-2/>.
+    **Note**: Some security messages are expected. This script was generated by the SQL Server New Availability Group Wizard and modified to support AUTOMATIC\_SEEDING. Automatic seeding makes initializing replicas much easier, and the speed of the process is increased significantly. For more details on automatic seeding and performance improvements please refer to SQLCAT's blog: <https://blogs.msdn.microsoft.com/sqlcat/2016/06/28/sqlsweet16-episode-2-availability-groups-automatic-seeding-2/>.
 
     ![On the Messages tab, Security messages showing Connecting and Disconnecting activity display. At this time, we are unable to capture all of the information in the messages. Future versions of this course should address this.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image88.png "Messages tab")
 
-24. Expand **AlwaysOn High Availability -\> Availability Groups**, right-click **AdventureWorksAG** (Primary), and choose **Show Dashboard**. Your dashboard should look like this:
+24. Expand **AlwaysOn High Availability -\> Availability Groups**, right-click **AdventureWorksAG** (Primary), and choose **Show Dashboard**. Your dashboard should look similar to this:
 
     ![On the Dashboard, a green checkmark displays next to AdventureWorksAG: hosted by SQLVM - 1 (Replica role: Primary). The Availability group state is Healthy, and Synchronization state for SQLVM-1 SQLVM-2, AdventureWorks SQLVM-1 and AdventureWorks SQLVM-1 is Synchronized.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image89.png "Dashboard")
 
-25. On the Azure portal, open the settings of the **BackendLB** load balancer in the **CloudShopRG** resource group.
+25. In the Azure portal, open the settings of the **BackendLB** load balancer in the **CloudShopRG** resource group.
 
     ![The BackendLB Load balancer option displays.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image90.png "BackendLB option")
 
@@ -637,7 +600,7 @@ In this task, you will deploy a SQL Always-On cluster using an ARM template that
 
     ![In the BackendPool1 blade, the Add a target network IP configuration link is selected.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image92.png "BackendPool1 blade")
 
-28. From the List for Target Virtual Machine select the **SQLVM-2** and the Network IP Configuration **ipconfig1 (10.0.1.7)**. Note that your IP address may be different.
+28. From the List for Target Virtual Machine select the **SQLVM-2** and the Network IP Configuration **ipconfig1**. Note that your IP address may be different.
 
     ![Fields in the BackendPool1 blade are set to the previously defined settings.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image93.png "BackendPool1 blade")
 
@@ -645,9 +608,9 @@ In this task, you will deploy a SQL Always-On cluster using an ARM template that
 
     ![Under BackendPool1 (2 virtual machines), SQLVM-1 and SQLVM-2 display.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image94.png "BackendPool1 list")
 
-30. Go back to **SQLVM-1** and open an **Administrative PowerShell\_ISE** session. Execute the following PowerShell to configure your cluster for the probe port.
+30. Go back to **SQLVM-1** and open an **Administrative PowerShell\_ISE** session (Right click > More > Run as administrator). Execute the following PowerShell to configure your cluster for the probe port.
 
-    ```
+    ```powershell
     $ClusterNetworkName = "Cluster Network 1"
     $IPResourceName = "AdventureWorksAG_10.0.1.9"
     $ILBIP = "10.0.1.50"
@@ -657,9 +620,9 @@ In this task, you will deploy a SQL Always-On cluster using an ARM template that
     Start-ClusterResource -Name "AdventureWorksAG"
     ```
 
-![Commands display in the Administrator PowerShell ISE window At this time, we are unable to capture all of the information in the PowerShell window. Future versions of this course should address this.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image95.png "Administrator PowerShell ISE window")
+    ![Commands display in the Administrator PowerShell ISE window with the output of the script showing that the cluster resources has been started.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image128.png "Administrator PowerShell ISE window")
 
-31. Connect to **SQLVM-02** and launch **SQL Server Management Studio**.
+31. Connect to **SQLVM-02** and launch **SQL Server Management Studio 17Ad**.
 
 32. Open a Server connection to the **AdventureWorks** listener endpoint to verify connectivity. The listener is like entering a SQL Server's Name, but this is the Availability Group.
 
@@ -673,13 +636,15 @@ In this task, you will deploy a SQL Always-On cluster using an ARM template that
 
 In this task, you will convert the disks of the SQL deployment to managed disks. This task could be automated as part of the template deployment; however, it is important to understand how to migrate existing infrastructure to managed disks.
 
-1.  On LABVM open the PowerShell ISE Tool.
+1.  On **LABVM** open the PowerShell ISE Tool.
 
-**Note**: In the next few steps, you will use PowerShell to migrate the disks for the SQL Unfractured to Managed Disks.
+    **Note**: In the next few steps, you will use PowerShell to migrate the disks for the SQL cluster to Managed Disks.
 
-2.  In the execution pane, login to Azure using the Login-AzureRmAccount, and press Enter.
+2.  In the execution pane, login to Azure using the **Connect-AzureRmAccount**, and press Enter.
 
-    Login-AzureRmAccount
+    ```powershell
+    Connect-AzureRmAccount
+    ```
 
 3.  At the Azure login screen, enter your Account and Password.
 
@@ -687,24 +652,24 @@ In this task, you will convert the disks of the SQL deployment to managed disks.
 
 4.  Once logged in, make sure to set your subscription that is the default for this hands-on lab.
 
-    ```
+    ```powershell
     Get-AzureRMSubscription
-    Select-AzureRmSubscription -SubscriptionName ???your subscription name???
+    Select-AzureRmSubscription -SubscriptionName <Your subscription name>
     ```
 
 5.  Once this is completed, run the following command to verify your VMs for the hands-on lab are present.
 
-    ```
+    ```powershell
     Get-AzureRMVM -ResourceGroupName CloudShopRG
-
     ```
     
 6.  Now, move to the scripting pane of the PowerShell ISE tool. Paste this code into the window.
 
-    ```
+    ```powershell
     <#
         The following code converts the existing availability set to aligned/managed and then converts the disks to managed as well. 
-        Note: The PlatformFaultDomainCount is set to 2 - this is because the region currently only supports two managed fault domains
+        Note: The PlatformFaultDomainCount is set to 3 - this is because the region currently supports three managed fault domains.
+        Some regions only support 2. Refer to the documentation.
     #>
 
     $rgName = 'CloudShopRG'
@@ -713,7 +678,7 @@ In this task, you will convert the disks of the SQL deployment to managed disks.
 
     $avSet = Get-AzureRmAvailabilitySet -ResourceGroupName $rgName -Name $avSetName
 
-    $avSet.PlatformFaultDomainCount = 2
+    $avSet.PlatformFaultDomainCount = 3
 
     Update-AzureRmAvailabilitySet -AvailabilitySet $avSet -Sku Aligned
 
@@ -727,9 +692,11 @@ In this task, you will convert the disks of the SQL deployment to managed disks.
     }
     ```
 
-7.  Next, click the **Play** button in PowerShell\_ISE. This will deallocate all the machines in the Availability Set SQLAVSET and migrate them to a Managed AVSET and the disk to Managed Disks.
+    **Note**: The documentation for the maximum number of fault domains per-region can be found at <https://docs.microsoft.com/en-us/azure/virtual-machines/windows/manage-availability#number-of-fault-domains-per-region>.
 
-    > **Note**: This process will take about 10-15 minutes to complete and be careful not to stop the process.
+7.  Next, click the **Run script** button in the PowerShell ISE. This will deallocate all of the machines in the Availability Set SQLAvSet and migrate them to a Managed AVSET and the disk to Managed Disks.
+
+    **Note**: This process will take about 10-15 minutes to complete. Do not stop the process or close the ISE.
 
 8.  Open the Azure portal and browse to the **CloudShopRG** Resource Group. Notice now, the machines are using Managed Disks, and the disk objects now appear.
 
@@ -745,15 +712,15 @@ In this task, you will deploy a VM scale set that can automatically scale up or 
 
 2.  Specify the existing resource group **CloudShopRG** and set the **Instance Count to 2**.
 
-    > **Note**: The instance count is the initial number of servers deployed. The number can change based on the auto scale rules set in the ARM template.
+    **Note**: The instance count is the initial number of servers deployed. The number can change based on the auto scale rules set in the ARM template.
 
-3.  Agree to the terms, check **Pin to dashboard** and click **Purchase**.
+3.  Check the **I agree to the terms and conditions state above** checkbox on the page and click **Purchase**.
 
-4.  While the scale set is deploying, open the ARM template you just deployed by navigating to: <https://github.com/opsgility/cw-building-resilient-iaas-architecture-ss/blob/master/azure-deploy.json>. Review the auto scale settings in the autoscalewad resource to understand how the default auto scale settings are configured.
+4.  While the scale set is deploying, open the ARM template you just deployed by navigating to: <https://github.com/opsgility/cw-building-resilient-iaas-architecture-ss/blob/master/azure-deploy.json>. Review the auto scale settings in the **autoscalewad** resource to understand how the default auto scale settings are configured.
 
 ### Summary
 
-In this exercise, you deployed resilient web servers behind a load balancer, and a SQL Always-On Availability Group for database resiliency.
+In this exercise, you deployed resilient web servers behind a load balancer, and a SQL Always-On Availability Group for database resiliency through an ARM template.
 
 ## Exercise 4: Configure SQL Server Managed Backup 
 
@@ -765,36 +732,31 @@ In this exercise, you will configure SQL Server Managed Backup to back up to an 
 
 In this task, you will add a 3rd node to the SQL Always-On deployment in a second region that you can then failover with Azure Site Recovery in the event of a failure in the primary region.
 
-1.  From the lab virtual machine, execute the following PowerShell ISE commands to create a new storage account and generate the T-SQL needed to configure managed backup for the AdventureWorks database.
+1.  From **LABVM**, execute the following PowerShell commands in the PowerShell ISE to create a new storage account and generate the T-SQL needed to configure managed backup for the AdventureWorks database.
 
-    ```
+    ```powershell
     $storageAcctName = "[unique storage account name]"
 
     $resourceGroupName = "CloudShopRG"
     $containerName= "backups"
-    $location = "West Central US"
+    $location = "East US 2"
     $storageSkuName = "Standard_LRS"
-
 
     "Creating Storage Account $storageAcctName"
     $sa = New-AzureRmStorageAccount -ResourceGroupName $resourceGroupName  `
-                                    -Name $storageAcctName `
-                                    -Location $location `
-                                    -SkuName $storageSkuName 
-
+        -Name $storageAcctName `
+        -Location $location `
+        -SkuName $storageSkuName 
 
     $storageKey = (Get-AzureRmStorageAccountKey -Name $storageAcctName -ResourceGroupName $resourceGroupName )[0].Value
     $context = New-AzureStorageContext -StorageAccountName $storageAcctName -StorageAccountKey $storageKey
 
-
     Write-Host "Creating New Storage Container  $containerName" 
     New-AzureStorageContainer -name $containerName -permission container -context $context
-
 
     $fullSasToken = New-AzureStorageContainerSASToken -Name $containerName -Permission rwdl -FullUri -Context $context  
     $containerUrl = $fullSasToken.Substring(0,$fullSasToken.IndexOf("?"))
     $sasToken = $fullSasToken.Substring($fullSasToken.IndexOf("?")+1)
-
 
     $enableManagedBackupScript = @"
     --------------------
@@ -817,8 +779,7 @@ In this task, you will add a 3rd node to the SQL Always-On deployment in a secon
      --------------------
     "@
 
-
-    write-host $enableManagedBackupScript 
+    Write-Host $enableManagedBackupScript 
     ```
 
 2.  Execute the code using PowerShell ISE. Make sure you change the **\$storageAcctName = \"\[unique storage account name\]\"** field to a unique storage account name across Azure prior to execution. 
@@ -827,7 +788,7 @@ In this task, you will add a 3rd node to the SQL Always-On deployment in a secon
 
 ### Task 2: Configure managed backup in SQL Server
 
-1.  Connect to **SQLVM-1** using remote desktop and launch SQL Server Management Studio.
+1.  Connect to **SQLVM-1** using remote desktop and launch SQL Server Management Studio and connect to the database instance.
 
 2.  Right click on **SQLVM-1**, and click **New Query**.
 
@@ -835,7 +796,7 @@ In this task, you will add a 3rd node to the SQL Always-On deployment in a secon
 
 3.  Paste in the following code and click **Execute** to enable SQL Server Agent extended stored procedures. Refresh SQL Server Management Studio and if SQL Server Agent is stopped right click on it and click Start.
 
-    ```
+    ```sql
     EXEC sp_configure 'show advanced options', 1
     GO
     RECONFIGURE
@@ -850,7 +811,7 @@ In this task, you will add a 3rd node to the SQL Always-On deployment in a secon
 
 5.  Paste the code into the query window replacing the existing code and click **Execute** to create a custom backup schedule.
 
-    ```
+    ```sql
     USE msdb;  
     GO  
     EXEC managed_backup.sp_backup_config_schedule   
@@ -861,14 +822,14 @@ In this task, you will add a 3rd node to the SQL Always-On deployment in a secon
         ,@backup_begin_time =  '17:30'  
         ,@backup_duration = '02:00'  
         ,@log_backup_freq = '00:05'  
-    GO  
+    GO
     ```
 6.  Execute the following tSQL in the query window to generate a backup on-demand. You can also specify Log for \@type.
 
-    ```
+    ```sql
     EXEC msdb.managed_backup.sp_backup_on_demand   
     @database_name  = 'AdventureWorks',
-    @type ='Database' 
+    @type ='Database'
     ```
     
 ## Exercise 5: Validate resiliency
@@ -910,6 +871,8 @@ In this task, you will add a 3rd node to the SQL Always-On deployment in a secon
 2.  Open each vault and validate that a backup of the VM has occurred.
 
     ![The screen shows 2 backup items from one of the vaults.](images/Hands-onlabstep-bystep-BuildingaresilientIaaSarchitectureimages/media/image109.png "Usage")
+
+    **Note**: Backup storage consumption may be 0 B if a backup has not occurred. The timing of backups is driven by the policy associated with the backup. Only one policy can be assigned to a virtual machine when using the Azure Backup Extension for Virtual Machines.
 
 3.  To validate the SQL Server backup, open the Storage Account created earlier in the Azure portal and click **Blobs** -\> and then **backups**. If the backup has already completed, you will see the backup file in the container.
 

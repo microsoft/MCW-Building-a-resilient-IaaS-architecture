@@ -9,7 +9,7 @@ Whiteboard design session student guide
 </div>
 
 <div class="MCWHeader3">
-August 2018
+November 2018
 </div>
 
 Information in this document, including URL and other Internet Web site references, is subject to change without notice. Unless otherwise noted, the example companies, organizations, products, domain names, e-mail addresses, logos, people, places, and events depicted herein are fictitious, and no association with any real company, organization, product, domain name, e-mail address, logo, person, place or event is intended or should be inferred. Complying with all applicable copyright laws is the responsibility of the user. Without limiting the rights under copyright, no part of this document may be reproduced, stored in or introduced into a retrieval system, or transmitted in any form or by any means (electronic, mechanical, photocopying, recording, or otherwise), or for any purpose, without the express written permission of Microsoft Corporation.
@@ -54,7 +54,7 @@ At the end of the workshop, you will be better able to design and use availabili
 
 Analyze your customer’s needs.
 
-Timeframe: 15 minutes
+Time frame: 15 minutes
 
 Directions: With all participants in the session, the facilitator/SME presents an overview of the customer case study along with technical tips. 
 1.  Meet your table participants and trainer .
@@ -114,15 +114,10 @@ Contoso has received multiple complaints from customers at times when they have 
 
 
 Contoso's business critical applications include:
-
 -   The authentication and authorization infrastructure.
-
 -   The website with its SQL data tier, supporting both employees, customers and third-party manufacturing plants and factories. Use cases include:
-
     -   Employees: Sales lead tracking
-
     -   Customers: Search the catalog of inventory, order parts, schedule repairs and provide support
-
     -   Third-party manufacturing plants and factories: Supply manufacturing schedules to Contoso
 
 ### Customer needs 
@@ -160,7 +155,7 @@ Contoso's business critical applications include:
 **Outcome** 
 Design a solution and prepare to present the solution to the target customer audience in a 15-minute chalk-talk format. 
 
-Timeframe: 60 minutes
+Time frame: 60 minutes
 
 **Business needs**
 
