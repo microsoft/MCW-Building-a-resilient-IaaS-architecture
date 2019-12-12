@@ -33,7 +33,7 @@
     "imagePublisher": "MicrosoftVisualStudio",
     "imageOffer": "visualstudio2019latest",
     "imageSku": "vs-2019-comm-latest-ws2019",
-    "imageVersion": "2019.9.18",
+    "imageVersion": "2019.12.02",
     "OSDiskName": "LabVMOSDisk",
     "OSDiskType": "Premium_LRS",
     "nicName": "LabVMNIC",
